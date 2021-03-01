@@ -3,11 +3,11 @@
     using BepInEx;
     using HarmonyLib;
     using UnityEngine;
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using System.Text;
+    using System.Reflection.Emit;
     using System.Linq;
-    using UnityEngine.UI;
 
     [BepInPlugin(MID, "Much Better Hotkeys", pluginVersion)]
     [BepInProcess("valheim.exe")]
@@ -65,26 +65,39 @@
             return ___m_buildPieces;
         }
 
+        private static bool switching_hotbars = false;
+
         private static void SwitchHotbar(Player player) {
             // TODO: Currently tools don't seem to switch places
             // TODO: Feathers moved over my tool once and now the tool is gone
+            if (switching_hotbars) {
+                Debug.Log("Still switching");
+                return;
+            }
+            switching_hotbars = true;
             Debug.Log("Switching hotbars");
             ref Inventory inv = ref ((Humanoid)player).m_inventory;
             int width = inv.GetWidth();
             for (int x = 0; x < width; x++) {
                 ItemDrop.ItemData row1Item = inv.GetItemAt(x, 0);
                 ItemDrop.ItemData row2Item = inv.GetItemAt(x, 1);
+                ((Humanoid)player).RemoveFromEquipQueue(row1Item);
+                ((Humanoid)player).RemoveFromEquipQueue(row2Item);
                 if (row2Item != null) {
                     // Row 2 -> Row 1
-                    //inv.RemoveItem(x);
+                    if (row1Item != null) {
+                        inv.RemoveItem(row1Item);
+                    }
                     inv.MoveItemToThis(inv, row2Item, row2Item.m_stack, x, 0);
                 }
                 if (row1Item != null) {
                     // Row 1 -> Row 2
-                    //inv.RemoveItem(width + x);
+                    // TODO: This generates a "Item is not in this container message"
                     inv.MoveItemToThis(inv, row1Item, row1Item.m_stack, x, 1);
                 }
+                inv.Changed();
             }
+            switching_hotbars = false;
             return;
         }
 
@@ -95,13 +108,6 @@
             // We should be the local player and we should be able to take input
             if (Player.m_localPlayer != __instance || !(bool)typeof(Player).GetMethod("TakeInput", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, new object[0])) {
                 return;
-            }
-
-            if (Input.GetKeyDown(KeyCode.K)) {
-                // TODO: Remove, clears inventory for debugging
-                // Lookout, permanently destroys your inventory
-                ref Inventory inv = ref ((Humanoid)__instance).m_inventory;
-                inv.RemoveAll();
             }
 
             //if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && Input.GetKeyDown(KeyCode.Alpha1)) {
@@ -135,17 +141,12 @@
                             // current_piece_table.SetSelected(new Vector2Int(y % 10, y / 10));
                             __instance.SetSelectedPiece(new Vector2Int(y % 10, y / 10));
 
-                            Debug.Log(___m_placeRotation);
-                            Debug.Log(elem.transform.rotation.y);
-                            //___m_placeRotation = (int)(elem.transform.rotation.y / 22.5f);
-
+                            // Set rotation of piece to be equal to that of the hovered piece
+                            __instance.m_placeRotation = (int)(Math.Round(currentHoverPiece.transform.localRotation.eulerAngles.y / 22.5f));
 
                             // Update the placement ghost
                             MethodInfo setupPlacementGhostRef = typeof(Player).GetMethod("SetupPlacementGhost", BindingFlags.NonPublic | BindingFlags.Instance);
                             setupPlacementGhostRef.Invoke(__instance, new object[] { });
-
-                            Debug.Log(elem);
-                            Hud.instance.SetupPieceInfo(elem);
 
                             objectFound = true;
                         }
@@ -153,6 +154,29 @@
                 }
             }
             return;
+        }
+
+        private static MethodInfo InPlaceModeRef = AccessTools.Method(typeof(Character), "InPlaceMode", null, null);
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(Hud), "Awake")]
+        private static void MoveHealthRoot(Hud __instance) {
+            Vector3 currentPosition = __instance.m_pieceHealthRoot.localPosition;
+            __instance.m_pieceHealthRoot.localPosition = new Vector3(currentPosition.x, currentPosition.y + 20f, currentPosition.z);
+        }
+
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(Player), "UpdateHover")]
+        private static IEnumerable<CodeInstruction> Patch(IEnumerable<CodeInstruction> instructions) {
+            // TODO: This might remove the entire inPlaceMode functionality
+            List<CodeInstruction> list = Enumerable.ToList<CodeInstruction>(instructions);
+            for (int i = 0; i < list.Count; i++) {
+                if (list[i].Calls(PlayerHotkeyPatch.InPlaceModeRef)) {
+                    list[i - 1].opcode = OpCodes.Nop;
+                    list[i] = new CodeInstruction(OpCodes.Ldc_I4_0, null);
+                }
+            }
+            return Enumerable.AsEnumerable<CodeInstruction>(list);
         }
     }
 }
