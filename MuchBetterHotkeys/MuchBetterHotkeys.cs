@@ -34,6 +34,11 @@
                 Logger.LogError("Failed to setup MuchBetterHotkeys.cfg. BepInEx ConfigFile returned null. Using defaults");
             }
 
+            if (!MuchBetterHotkeys.enabledMod) {
+                Logger.LogInfo(modName + " has been disabled in the config");
+                return;
+            }
+
             harmony.PatchAll();
         }
 
@@ -74,11 +79,6 @@
     [HarmonyPatch]
     public class PlayerHotkeyPatch : BaseUnityPlugin
     {
-
-        void Awake() {
-
-        }
-
         private static Piece GetPiece(Player player) {
             RaycastHit hit;
             if (Physics.Raycast(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, out hit, 50f, (int)typeof(Player).GetField("m_removeRayMask", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(player), QueryTriggerInteraction.UseGlobal) && (Vector3.Distance(hit.point, ((Character)player).m_eye.position) < player.m_maxPlaceDistance)) {
@@ -130,6 +130,7 @@
                     // Row 1 -> Row 2
                     // TODO: This generates a "Item is not in this container message"
                     inv.MoveItemToThis(inv, row1Item, row1Item.m_stack, x, 1);
+                    //inv.(row1Item, row1Item.m_stack, x, 1);
                 }
                 inv.Changed();
             }
@@ -140,55 +141,29 @@
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Player), "Update")]
         private static bool Prefix_Update(Player __instance) {
+            if (Player.m_localPlayer != __instance || !(bool)typeof(Player).GetMethod("TakeInput", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, new object[0])) {
+                return true;
+            }
+
             if (Hud.IsPieceSelectionVisible() && __instance.InPlaceMode()) {
-                if (Input.GetKeyDown(KeyCode.Alpha1)) {
-                    __instance.SetSelectedPiece(new Vector2Int(0, 0));
-                    Hud.instance.TogglePieceSelection();
+                KeyCode[] keycodes = { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0 };
+                for (int idx = 0; idx < keycodes.Length; idx++) {
+                    KeyCode curKeyCode = keycodes[idx];
+                    if (Input.GetKeyDown(curKeyCode)) {
+                        __instance.SetSelectedPiece(new Vector2Int(idx, 0));
+                        Hud.instance.TogglePieceSelection();
+                        return false;
+                    }
+                }
+            }
+
+            if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))) {
+                if (Input.GetAxis("Mouse ScrollWheel") < 0f) {
+                    __instance.m_placeRotation -= 4;
                     return false;
                 }
-                if (Input.GetKeyDown(KeyCode.Alpha2)) {
-                    __instance.SetSelectedPiece(new Vector2Int(1, 0));
-                    Hud.instance.TogglePieceSelection();
-                    return false;
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha3)) {
-                    __instance.SetSelectedPiece(new Vector2Int(2, 0));
-                    Hud.instance.TogglePieceSelection();
-                    return false;
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha4)) {
-                    __instance.SetSelectedPiece(new Vector2Int(3, 0));
-                    Hud.instance.TogglePieceSelection();
-                    return false;
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha5)) {
-                    __instance.SetSelectedPiece(new Vector2Int(4, 0));
-                    Hud.instance.TogglePieceSelection();
-                    return false;
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha6)) {
-                    __instance.SetSelectedPiece(new Vector2Int(5, 0));
-                    Hud.instance.TogglePieceSelection();
-                    return false;
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha7)) {
-                    __instance.SetSelectedPiece(new Vector2Int(6, 0));
-                    Hud.instance.TogglePieceSelection();
-                    return false;
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha8)) {
-                    __instance.SetSelectedPiece(new Vector2Int(7, 0));
-                    Hud.instance.TogglePieceSelection();
-                    return false;
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha9)) {
-                    __instance.SetSelectedPiece(new Vector2Int(8, 0));
-                    Hud.instance.TogglePieceSelection();
-                    return false;
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha0)) {
-                    __instance.SetSelectedPiece(new Vector2Int(9, 0));
-                    Hud.instance.TogglePieceSelection();
+                if (Input.GetAxis("Mouse ScrollWheel") > 0f) {
+                    __instance.m_placeRotation += 4;
                     return false;
                 }
             }
@@ -204,13 +179,12 @@
             }
 
             //if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && Input.GetKeyDown(KeyCode.Alpha1)) {
-            if (Input.GetKeyDown(KeyCode.Z)) {
+            if (Input.GetKeyDown(MuchBetterHotkeys.SwitchHotbarHotkey)) {
                 PlayerHotkeyPatch.SwitchHotbar(__instance);
                 return;
             }
 
-
-            if (Input.GetKeyDown(KeyCode.Q)) {
+            if (Input.GetKeyDown(MuchBetterHotkeys.QuickSelectBuildHotkey)) {
                 // This code should not run if we are not holding the hammer, the placement menu is open or we're not pointing at something
                 if (!__instance.InPlaceMode() || Hud.IsPieceSelectionVisible()) {
                     return;
@@ -231,6 +205,7 @@
                         if (elem.m_name == currentHoverPiece.m_name) {
                             // Set the selected category and selected piece in the piece table of the player
                             current_piece_table.SetCategory((int)elem.m_category);
+
                             // TODO: Check what the length of the grid row is
                             // current_piece_table.SetSelected(new Vector2Int(y % 10, y / 10));
                             __instance.SetSelectedPiece(new Vector2Int(y % 10, y / 10));
@@ -241,6 +216,9 @@
                             // Update the placement ghost
                             MethodInfo setupPlacementGhostRef = typeof(Player).GetMethod("SetupPlacementGhost", BindingFlags.NonPublic | BindingFlags.Instance);
                             setupPlacementGhostRef.Invoke(__instance, new object[] { });
+
+                            // Update the requirements UI
+                            Hud.instance.m_hoveredPiece = null;
 
                             objectFound = true;
                         }
@@ -262,6 +240,9 @@
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(Player), "UpdateHover")]
         private static IEnumerable<CodeInstruction> Patch(IEnumerable<CodeInstruction> instructions) {
+            if (MuchBetterHotkeys.interactWhileBuilding) {
+                return instructions;
+            }
             // TODO: This might remove the entire inPlaceMode functionality
             List<CodeInstruction> list = Enumerable.ToList<CodeInstruction>(instructions);
             for (int i = 0; i < list.Count; i++) {
