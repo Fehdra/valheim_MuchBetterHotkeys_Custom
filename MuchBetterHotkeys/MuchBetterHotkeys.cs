@@ -1,9 +1,11 @@
 ﻿namespace MuchBetterHotkeys
 {
     using BepInEx;
+    using BepInEx.Configuration;
     using HarmonyLib;
     using UnityEngine;
     using System;
+    using System.IO;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -15,32 +17,68 @@
     public class MuchBetterHotkeys : BaseUnityPlugin
     {
         private const string modName = "MuchBetterHotkeys";
-        private const string MID = "org.drir.plugins.muchbetterhotkeys";
+        private const string MID = "org.enta.plugins.muchbetterhotkeys";
         private const string pluginVersion = "0.1.0";
+        private static string SettingsPath = Path.Combine(Paths.ConfigPath, "MuchBetterHotkeys.cfg");
+        public static ConfigFile Settings = null;
 
         // Awake is called once when both the game and the plug-in are loaded
         void Awake() {
             var harmony = new Harmony(MID);
 
-            // Game's version in format "major.minor.patch"
-            // string gameVersion = Version.GetVersionString();
-            // Version(s) you target
-            string[] supportedGameVersions = { "0.145.6" };
-
-            // Skip patching if it's the wrong version
+            // Skip patching if it is the wrong version
+            MuchBetterHotkeys.Settings = new ConfigFile(MuchBetterHotkeys.SettingsPath, true);
+            if (MuchBetterHotkeys.Settings != null) {
+                this.LoadConfig();
+            } else {
+                Logger.LogError("Failed to setup MuchBetterHotkeys.cfg. BepInEx ConfigFile returned null. Using defaults");
+            }
 
             harmony.PatchAll();
         }
 
+        // Token: 0x06000003 RID: 3 RVA: 0x0000208D File Offset: 0x0000028D
+        private T BindParameter<T>(T param, string key, string description) {
+            return MuchBetterHotkeys.Settings.Bind<T>("MuchBetterHotkeys", key, param, description).Value;
+        }
+
+        public static bool enabledMod = true;
+        public static bool interactWhileBuilding = true;
+        public static KeyCode SwitchHotbarHotkey = KeyCode.Z;
+        public static KeyCode QuickSelectBuildHotkey = KeyCode.Q;
+
+        // Token: 0x06000004 RID: 4 RVA: 0x000020A8 File Offset: 0x000002A8
+        private void LoadConfig() {
+            MuchBetterHotkeys.enabledMod = this.BindParameter<bool>(MuchBetterHotkeys.enabledMod, "Enable", "Whether or not to enable this mod");
+            MuchBetterHotkeys.interactWhileBuilding = this.BindParameter<bool>(MuchBetterHotkeys.interactWhileBuilding, "InteractWhileBuilding", "Whether or not to turn on interaction while holding the hammer or the hoe");
+            string value = this.BindParameter<string>(MuchBetterHotkeys.SwitchHotbarHotkey.ToString(), "SwitchHotbarHotkey", "Key codes can be found here - https://docs.unity3d.com/ScriptReference/KeyCode.html");
+            try {
+                MuchBetterHotkeys.SwitchHotbarHotkey = (KeyCode)Enum.Parse(typeof(KeyCode), value, true);
+            } catch (Exception) {
+                base.Logger.LogError("Failed to parse Switching Hotbars key, using default 'z'");
+            }
+            value = this.BindParameter<string>(MuchBetterHotkeys.QuickSelectBuildHotkey.ToString(), "QuickSelectBuildHotkey", "Key codes can be found here - https://docs.unity3d.com/ScriptReference/KeyCode.html");
+            try {
+                MuchBetterHotkeys.QuickSelectBuildHotkey = (KeyCode)Enum.Parse(typeof(KeyCode), value, true);
+            } catch (Exception) {
+                base.Logger.LogError("Failed to parse Quick Select Build key, using default 'q'");
+            }
+        }
+
         void OnDestroy() {
             var harmony = new Harmony(MID);
-            harmony.UnpatchAll();
+            harmony.UnpatchSelf();
         }
     }
 
     [HarmonyPatch]
     public class PlayerHotkeyPatch : BaseUnityPlugin
     {
+
+        void Awake() {
+
+        }
+
         private static Piece GetPiece(Player player) {
             RaycastHit hit;
             if (Physics.Raycast(GameCamera.instance.transform.position, GameCamera.instance.transform.forward, out hit, 50f, (int)typeof(Player).GetField("m_removeRayMask", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(player), QueryTriggerInteraction.UseGlobal) && (Vector3.Distance(hit.point, ((Character)player).m_eye.position) < player.m_maxPlaceDistance)) {
@@ -71,11 +109,9 @@
             // TODO: Currently tools don't seem to switch places
             // TODO: Feathers moved over my tool once and now the tool is gone
             if (switching_hotbars) {
-                Debug.Log("Still switching");
                 return;
             }
             switching_hotbars = true;
-            Debug.Log("Switching hotbars");
             ref Inventory inv = ref ((Humanoid)player).m_inventory;
             int width = inv.GetWidth();
             for (int x = 0; x < width; x++) {
@@ -101,10 +137,67 @@
             return;
         }
 
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Player), "Update")]
+        private static bool Prefix_Update(Player __instance) {
+            if (Hud.IsPieceSelectionVisible() && __instance.InPlaceMode()) {
+                if (Input.GetKeyDown(KeyCode.Alpha1)) {
+                    __instance.SetSelectedPiece(new Vector2Int(0, 0));
+                    Hud.instance.TogglePieceSelection();
+                    return false;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha2)) {
+                    __instance.SetSelectedPiece(new Vector2Int(1, 0));
+                    Hud.instance.TogglePieceSelection();
+                    return false;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha3)) {
+                    __instance.SetSelectedPiece(new Vector2Int(2, 0));
+                    Hud.instance.TogglePieceSelection();
+                    return false;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha4)) {
+                    __instance.SetSelectedPiece(new Vector2Int(3, 0));
+                    Hud.instance.TogglePieceSelection();
+                    return false;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha5)) {
+                    __instance.SetSelectedPiece(new Vector2Int(4, 0));
+                    Hud.instance.TogglePieceSelection();
+                    return false;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha6)) {
+                    __instance.SetSelectedPiece(new Vector2Int(5, 0));
+                    Hud.instance.TogglePieceSelection();
+                    return false;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha7)) {
+                    __instance.SetSelectedPiece(new Vector2Int(6, 0));
+                    Hud.instance.TogglePieceSelection();
+                    return false;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha8)) {
+                    __instance.SetSelectedPiece(new Vector2Int(7, 0));
+                    Hud.instance.TogglePieceSelection();
+                    return false;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha9)) {
+                    __instance.SetSelectedPiece(new Vector2Int(8, 0));
+                    Hud.instance.TogglePieceSelection();
+                    return false;
+                }
+                if (Input.GetKeyDown(KeyCode.Alpha0)) {
+                    __instance.SetSelectedPiece(new Vector2Int(9, 0));
+                    Hud.instance.TogglePieceSelection();
+                    return false;
+                }
+            }
+            return true;
+        }
+
         [HarmonyPostfix]
         [HarmonyPatch(typeof(Player), "Update")]
         private static void Postfix_Update(Player __instance, ref int ___m_placeRotation) {
-
             // We should be the local player and we should be able to take input
             if (Player.m_localPlayer != __instance || !(bool)typeof(Player).GetMethod("TakeInput", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, new object[0])) {
                 return;
@@ -115,6 +208,7 @@
                 PlayerHotkeyPatch.SwitchHotbar(__instance);
                 return;
             }
+
 
             if (Input.GetKeyDown(KeyCode.Q)) {
                 // This code should not run if we are not holding the hammer, the placement menu is open or we're not pointing at something
