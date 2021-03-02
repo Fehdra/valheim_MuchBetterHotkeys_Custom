@@ -240,7 +240,7 @@
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(Player), "UpdateHover")]
         private static IEnumerable<CodeInstruction> Patch(IEnumerable<CodeInstruction> instructions) {
-            if (MuchBetterHotkeys.interactWhileBuilding) {
+            if (!MuchBetterHotkeys.interactWhileBuilding) {
                 return instructions;
             }
             // TODO: This might remove the entire inPlaceMode functionality
