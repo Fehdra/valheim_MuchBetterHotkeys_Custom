@@ -267,6 +267,33 @@
             return;
         }
 
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(InventoryGui), "OnRightClickItem", new Type[]
+        {
+            typeof(InventoryGrid),
+            typeof(ItemDrop.ItemData),
+            typeof(Vector2i),
+        })]
+        private static bool Prefix_OnRightClickItem(InventoryGui __instance, InventoryGrid grid, ItemDrop.ItemData item, Vector2i pos) {
+            // TODO
+            if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && grid.isActiveAndEnabled) {
+                __instance.SetupDragItem(item, Player.m_localPlayer.m_inventory, (int)Math.Round(item.m_stack / 2.0f));
+                Debug.Log(__instance.m_dragGo);
+                return false;
+            }
+            if ((Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) && grid.isActiveAndEnabled) {
+                if (__instance.m_dragItem != null) {
+                    // Add 1 if we do rmb more often
+                    // TODO
+                    //__instance.SetupDragItem(item, Player.m_localPlayer.m_inventory, 1);
+                } else {
+                    __instance.SetupDragItem(item, Player.m_localPlayer.m_inventory, 1);
+                    Debug.Log(__instance.m_dragGo);
+                }
+                return false;
+            }
+            return true;
+        }
 
         private static MethodInfo InPlaceModeRef = AccessTools.Method(typeof(Character), "InPlaceMode", null, null);
 
