@@ -51,6 +51,7 @@
         public static bool interactWhileBuilding = true;
         public static KeyCode SwitchHotbarHotkey = KeyCode.Z;
         public static KeyCode QuickSelectBuildHotkey = KeyCode.Q;
+        public static KeyCode QuickRepairHotkey = KeyCode.V;
 
         // Token: 0x06000004 RID: 4 RVA: 0x000020A8 File Offset: 0x000002A8
         private void LoadConfig() {
@@ -67,6 +68,12 @@
                 MuchBetterHotkeys.QuickSelectBuildHotkey = (KeyCode)Enum.Parse(typeof(KeyCode), value, true);
             } catch (Exception) {
                 base.Logger.LogError("Failed to parse Quick Select Build key, using default 'q'");
+            }
+            value = this.BindParameter<string>(MuchBetterHotkeys.QuickRepairHotkey.ToString(), "QuickRepairHotkey", "Key codes can be found here - https://docs.unity3d.com/ScriptReference/KeyCode.html");
+            try {
+                MuchBetterHotkeys.QuickRepairHotkey = (KeyCode)Enum.Parse(typeof(KeyCode), value, true);
+            } catch (Exception) {
+                base.Logger.LogError("Failed to parse Quick Repair key, using default 'v'");
             }
         }
 
@@ -106,34 +113,53 @@
         private static bool switching_hotbars = false;
 
         private static void SwitchHotbar(Player player) {
-            // TODO: Currently tools don't seem to switch places
-            // TODO: Feathers moved over my tool once and now the tool is gone
             if (switching_hotbars) {
                 return;
             }
             switching_hotbars = true;
             ref Inventory inv = ref ((Humanoid)player).m_inventory;
             int width = inv.GetWidth();
+            ItemDrop.ItemData currentLeftHidden = player.m_hiddenLeftItem;
+            ItemDrop.ItemData currentRightHidden = player.m_hiddenRightItem;
             for (int x = 0; x < width; x++) {
                 ItemDrop.ItemData row1Item = inv.GetItemAt(x, 0);
                 ItemDrop.ItemData row2Item = inv.GetItemAt(x, 1);
+                bool row1ItemIsEquipped = player.IsItemEquiped(row1Item);
+                bool row2ItemIsEquipped = player.IsItemEquiped(row2Item);
                 ((Humanoid)player).RemoveFromEquipQueue(row1Item);
                 ((Humanoid)player).RemoveFromEquipQueue(row2Item);
+                player.UnequipItem(row1Item);
+                player.UnequipItem(row2Item);
                 if (row2Item != null) {
                     // Row 2 -> Row 1
                     if (row1Item != null) {
+                        // Removing item
                         inv.RemoveItem(row1Item);
                     }
                     inv.MoveItemToThis(inv, row2Item, row2Item.m_stack, x, 0);
                 }
                 if (row1Item != null) {
                     // Row 1 -> Row 2
-                    // TODO: This generates a "Item is not in this container message"
+                    // TODO: This generates a "Item is not in this container message" and AddItem does not work for some reason
                     inv.MoveItemToThis(inv, row1Item, row1Item.m_stack, x, 1);
-                    //inv.(row1Item, row1Item.m_stack, x, 1);
                 }
-                inv.Changed();
+
+                if (row1ItemIsEquipped) {
+                    player.EquipItem(inv.GetItemAt(x, 1), false);
+                }
+                if (row2ItemIsEquipped) {
+                    player.EquipItem(inv.GetItemAt(x, 0), false);
+                }
             }
+            if (currentLeftHidden != null) {
+                player.m_hiddenLeftItem = inv.GetItemAt(currentLeftHidden.m_gridPos.x, currentLeftHidden.m_gridPos.y == 0 ? 1 : 0);
+                player.SetupVisEquipment(player.m_visEquipment, false);
+            }
+            if (currentRightHidden != null) {
+                player.m_hiddenRightItem = inv.GetItemAt(currentRightHidden.m_gridPos.x, currentRightHidden.m_gridPos.y == 0 ? 1 : 0);
+                player.SetupVisEquipment(player.m_visEquipment, false);
+            }
+            inv.Changed();
             switching_hotbars = false;
             return;
         }
@@ -141,10 +167,12 @@
         [HarmonyPrefix]
         [HarmonyPatch(typeof(Player), "Update")]
         private static bool Prefix_Update(Player __instance) {
+            // We should be the local player and we should be able to take input
             if (Player.m_localPlayer != __instance || !(bool)typeof(Player).GetMethod("TakeInput", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(__instance, new object[0])) {
                 return true;
             }
 
+            // Piece Selection hotkey
             if (Hud.IsPieceSelectionVisible() && __instance.InPlaceMode()) {
                 KeyCode[] keycodes = { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0 };
                 for (int idx = 0; idx < keycodes.Length; idx++) {
@@ -157,6 +185,7 @@
                 }
             }
 
+            // Rotate 90 degree angles
             if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))) {
                 if (Input.GetAxis("Mouse ScrollWheel") < 0f) {
                     __instance.m_placeRotation -= 4;
@@ -178,10 +207,20 @@
                 return;
             }
 
-            //if ((Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift)) && Input.GetKeyDown(KeyCode.Alpha1)) {
+            // Switch the hotbar, with the bar below it
             if (Input.GetKeyDown(MuchBetterHotkeys.SwitchHotbarHotkey)) {
                 PlayerHotkeyPatch.SwitchHotbar(__instance);
                 return;
+            }
+
+            if (Input.GetKeyDown(MuchBetterHotkeys.QuickRepairHotkey)) {
+                if (!__instance.InPlaceMode() || Hud.IsPieceSelectionVisible()) {
+                    return;
+                }
+                ItemDrop.ItemData rightItem = __instance.GetRightItem();
+                if (rightItem != null && __instance.HaveStamina(rightItem.m_shared.m_attack.m_attackStamina)) {
+                    __instance.Repair(rightItem, __instance.m_buildPieces.GetSelectedPiece());
+                }
             }
 
             if (Input.GetKeyDown(MuchBetterHotkeys.QuickSelectBuildHotkey)) {
@@ -227,6 +266,7 @@
             }
             return;
         }
+
 
         private static MethodInfo InPlaceModeRef = AccessTools.Method(typeof(Character), "InPlaceMode", null, null);
 
