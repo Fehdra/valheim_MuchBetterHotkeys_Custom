@@ -1,0 +1,11 @@
+{
+  "csharp.format.enable": true,
+  "csharpfixformat.style.enabled": true,
+  "csharpfixformat.style.braces.onSameLine": true,
+  "csharpfixformat.style.spaces.beforeParenthesis": false,
+  "csharpfixformat.style.spaces.beforeIndexerBracket": false,
+  "csharpfixformat.style.spaces.beforeBrace": true,
+  "[csharp]": {
+    "editor.formatOnSave": true
+  }
+}
