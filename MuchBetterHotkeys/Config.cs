@@ -53,8 +53,7 @@
             ParseKey("QuickRepairHotkey", ref this.QuickRepairHotkey, "While building, press this key to repair the object you're aiming at");
             ParseKey("QuickEquipHammerHotkey", ref this.QuickEquipHammerHotkey, "Find the hammer with the lowest durability in your inventory and equip it");
             ParseKey("QuickEquipTorchHotkey", ref this.QuickEquipTorchHotkey, "Find the torch with the lowest durability in your inventory and equip it");
-            ParseKey("BuildRotationSnapHotkey", ref this.SwitchHotbarHotkey, "Hold this key while scrolling to rotate objects 90 degrees in build mode");
+            ParseKey("BuildRotationSnapHotkey", ref this.BuildRotationSnapHotkey, "Hold this key while scrolling to rotate objects 90 degrees in build mode");
         }
-
     }
 }
