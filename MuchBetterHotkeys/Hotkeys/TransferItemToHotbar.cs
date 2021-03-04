@@ -1,9 +1,5 @@
 ﻿namespace MuchBetterHotkeys
 {
-
-    using System;
-    using BepInEx;
-    using HarmonyLib;
     using UnityEngine;
     public partial class PlayerHotkeyPatch
     {

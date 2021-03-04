@@ -1,9 +1,9 @@
 namespace MuchBetterHotkeys
 {
 
-    using System;
     using BepInEx;
     using HarmonyLib;
+    using System;
     using UnityEngine;
 
     [HarmonyPatch]
