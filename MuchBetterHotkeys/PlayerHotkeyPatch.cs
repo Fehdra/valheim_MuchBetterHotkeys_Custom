@@ -49,6 +49,10 @@ namespace MuchBetterHotkeys
                 }
             }
 
+            if (Input.GetKeyDown(KeyCode.Q) && __instance.GetHoverObject() != null) {
+                PlayerHotkeyPatch.QuickEquipAxe(__instance);
+                PlayerHotkeyPatch.QuickEquipPickaxe(__instance);
+            }
             return true;
         }
 
@@ -76,23 +80,13 @@ namespace MuchBetterHotkeys
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.P)) {
+            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickOpenSkillsHotkey)) {
                 PlayerHotkeyPatch.QuickOpenSkills();
                 return;
             }
 
-            if (Input.GetKeyDown(KeyCode.L)) {
+            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickOpenTextsHotkey)) {
                 PlayerHotkeyPatch.QuickOpenTexts();
-                return;
-            }
-
-            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickEquipAxeHotkey)) {
-                // PlayerHotkeyPatch.QuickEquipAxe(__instance);
-                return;
-            }
-
-            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickEquipPickaxeHotkey)) {
-                PlayerHotkeyPatch.QuickEquipPickaxe(__instance);
                 return;
             }
 

@@ -3,19 +3,23 @@ namespace MuchBetterHotkeys
 
     using System;
     using System.Collections.Generic;
+    using UnityEngine;
 
     public partial class PlayerHotkeyPatch
     {
-        private static void QuickEquipAxe(Player player) {
-            if (Hud.IsPieceSelectionVisible()) {
-                return;
+        private static bool QuickEquipAxe(Player player) {
+            Debug.Log(" Not Implemented Yet ");
+            return false;
+            GameObject hoverObject = player.GetHoverObject();
+            Hoverable hoverable = (hoverObject ? hoverObject.GetComponentInParent<Hoverable>() : null);
+            string hoverText = hoverable.GetHoverText();
+            string[] compareTexts = new string[] { "Log", "Beech", "Birch", "Oak", "Ancient tree" };
+            foreach (string compareText in compareTexts) {
+                if (compareText == hoverText) {
+                    PlayerHotkeyPatch.QuickEquipHammer(player);
+                }
             }
-            Predicate<ItemDrop.ItemData> isTorch = delegate (ItemDrop.ItemData item) { return item.m_shared.m_name == "$item_torch"; };
-            List<ItemDrop.ItemData> torches = player.m_inventory.m_inventory.FindAll(isTorch);
-            torches.Sort(new DurabilityComparer());
-            if (torches.Count > 0) {
-                player.EquipItem(torches[0]);
-            }
+            return false;
         }
     }
 }
