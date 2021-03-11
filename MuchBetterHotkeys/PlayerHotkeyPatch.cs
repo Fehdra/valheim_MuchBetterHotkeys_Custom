@@ -76,6 +76,16 @@ namespace MuchBetterHotkeys
                 return;
             }
 
+            if (Input.GetKeyDown(KeyCode.P)) {
+                PlayerHotkeyPatch.QuickOpenSkills();
+                return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.L)) {
+                PlayerHotkeyPatch.QuickOpenTexts();
+                return;
+            }
+
             if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickEquipAxeHotkey)) {
                 // PlayerHotkeyPatch.QuickEquipAxe(__instance);
                 return;
