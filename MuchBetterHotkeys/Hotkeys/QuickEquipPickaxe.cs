@@ -1,19 +1,22 @@
-namespace MuchBetterHotkeys {
+namespace MuchBetterHotkeys
+{
+    using UnityEngine;
 
-	using System;
-	using System.Collections.Generic;
-
-	public partial class PlayerHotkeyPatch {
-		private static void QuickEquipPickaxe(Player player) {
-			if (Hud.IsPieceSelectionVisible()) {
-				return;
-			}
-			Predicate<ItemDrop.ItemData> isTorch = delegate (ItemDrop.ItemData item) { return item.m_shared.m_name == "$item_torch"; };
-			List<ItemDrop.ItemData> torches = player.m_inventory.m_inventory.FindAll(isTorch);
-			torches.Sort(new DurabilityComparer());
-			if (torches.Count > 0) {
-				player.QueueEquipItem(torches[0]);
-			}
-		}
-	}
+    public partial class PlayerHotkeyPatch
+    {
+        private static bool QuickEquipPickaxe(Player player) {
+            Debug.Log(" Not Implemented Yet ");
+            return false;
+            GameObject hoverObject = player.GetHoverObject();
+            Hoverable hoverable = (hoverObject ? hoverObject.GetComponentInParent<Hoverable>() : null);
+            string hoverText = hoverable.GetHoverText();
+            string[] compareTexts = new string[] { "Rock", "Tin deposit", "Muddy scraps", "Copper deposit", "Obsidian", "Silver vein" };
+            foreach (string compareText in compareTexts) {
+                if (compareText == hoverText) {
+                    PlayerHotkeyPatch.QuickEquipHammer(player);
+                }
+            }
+            return false;
+        }
+    }
 }
