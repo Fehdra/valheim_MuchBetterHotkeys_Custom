@@ -8,9 +8,9 @@ using UnityEngine;
 
 namespace MuchBetterHotkeys
 {
-    class InteractWhileBuild : BaseUnityPlugin
-    {
 
+    public partial class PlayerHotkeyPatch
+    {
         private static MethodInfo InPlaceModeRef = AccessTools.Method(typeof(Character), "InPlaceMode", null, null);
 
         [HarmonyPostfix]
@@ -23,13 +23,12 @@ namespace MuchBetterHotkeys
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(Player), "UpdateHover")]
         private static IEnumerable<CodeInstruction> Patch(IEnumerable<CodeInstruction> instructions) {
-            if (!MuchBetterHotkeys.settings.interactWhileBuilding) {
+            if (!PlayerHotkeyPatch.m_settings.interactWhileBuilding) {
                 return instructions;
             }
-            // TODO: This might remove the entire inPlaceMode functionality
             List<CodeInstruction> list = Enumerable.ToList<CodeInstruction>(instructions);
             for (int i = 0; i < list.Count; i++) {
-                if (list[i].Calls(InteractWhileBuild.InPlaceModeRef)) {
+                if (list[i].Calls(PlayerHotkeyPatch.InPlaceModeRef)) {
                     list[i - 1].opcode = OpCodes.Nop;
                     list[i] = new CodeInstruction(OpCodes.Ldc_I4_0, null);
                 }

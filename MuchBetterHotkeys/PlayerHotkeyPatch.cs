@@ -20,6 +20,7 @@ namespace MuchBetterHotkeys
                 return true;
             }
 
+            // Quickly transfer items to hotbar using a hover and 1-9
             if (!PlayerHotkeyPatch.TransferItemToHotbarHotkey(__instance)) {
                 return false;
             }
@@ -28,6 +29,11 @@ namespace MuchBetterHotkeys
                 return true;
             }
 
+
+            // Easy Hotbar, making it more accessible to reach the higher numbers of the hotbar (5-8)
+            if (!PlayerHotkeyPatch.EasyHotbar(__instance)) {
+                return false;
+            }
 
             // Rotate 90 degree angles
             if (Input.GetKey(PlayerHotkeyPatch.m_settings.BuildRotationSnapHotkey)) {
@@ -67,6 +73,16 @@ namespace MuchBetterHotkeys
 
             if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickEquipHammerHotkey)) {
                 PlayerHotkeyPatch.QuickEquipHammer(__instance);
+                return;
+            }
+
+            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickEquipAxeHotkey)) {
+                // PlayerHotkeyPatch.QuickEquipAxe(__instance);
+                return;
+            }
+
+            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickEquipPickaxeHotkey)) {
+                PlayerHotkeyPatch.QuickEquipPickaxe(__instance);
                 return;
             }
 

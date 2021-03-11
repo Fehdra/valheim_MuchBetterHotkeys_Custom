@@ -6,23 +6,21 @@ using UnityEngine;
 
 namespace MuchBetterHotkeys
 {
-    class EasyHotbar
+    public partial class PlayerHotkeyPatch
     {
-        private static MethodInfo Hotbar1 = AccessTools.Method(typeof(Input), "GetKeyDown", new System.Type[] { typeof(int), }, null);
-
-        [HarmonyTranspiler]
-        [HarmonyPatch(typeof(Player), "Update")]
-        private static IEnumerable<CodeInstruction> Patch(IEnumerable<CodeInstruction> instructions) {
-            if (!MuchBetterHotkeys.settings.interactWhileBuilding) {
-                return instructions;
+        private static bool EasyHotbar(Player player) {
+            if (!Input.GetKey(PlayerHotkeyPatch.m_settings.EasyHotbarPrefix)) {
+                return true;
             }
-            // TODO: This might remove the entire inPlaceMode functionality
-            List<CodeInstruction> list = Enumerable.ToList<CodeInstruction>(instructions);
-            for (int i = 0; i < list.Count; i++) {
-                if (list[i].Calls()) {
+            KeyCode[] keycodes = { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4 };
+            for (int idx = 0; idx < keycodes.Length; idx++) {
+                KeyCode curKeyCode = keycodes[idx];
+                if (Input.GetKeyDown(curKeyCode)) {
+                    player.UseHotbarItem(idx + 5);
+                    return false;
                 }
             }
-            return Enumerable.AsEnumerable<CodeInstruction>(list);
+            return true;
         }
     }
 }

@@ -40,7 +40,7 @@
 
         public static Settings settings {
             get {
-                return MuchBetterHotkeys.settings;
+                return MuchBetterHotkeys.m_settings;
             }
         }
     }

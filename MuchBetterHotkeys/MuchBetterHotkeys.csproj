@@ -31,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
@@ -77,6 +78,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hotkeys\EasyHotbar.cs" />
+    <Compile Include="Hotkeys\QuickEquipPickaxe.cs" />
+    <Compile Include="Hotkeys\QuickEquipAxe.cs" />
     <Compile Include="Hotkeys\TransferItemToHotbar.cs" />
     <Compile Include="InteractWhileBuild.cs" />
     <Compile Include="Config.cs" />

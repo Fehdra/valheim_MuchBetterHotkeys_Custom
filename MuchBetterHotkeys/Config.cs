@@ -28,7 +28,10 @@
         public KeyCode QuickRepairHotkey = KeyCode.V;
         public KeyCode QuickEquipHammerHotkey = KeyCode.B;
         public KeyCode QuickEquipTorchHotkey = KeyCode.T;
+        public KeyCode QuickEquipPickaxeHotkey = KeyCode.P;
+        public KeyCode QuickEquipAxeHotkey = KeyCode.L;
         public KeyCode BuildRotationSnapHotkey = KeyCode.LeftControl;
+        public KeyCode EasyHotbarPrefix = KeyCode.LeftAlt;
 
         private T BindParameter<T>(T param, string key, string description) {
             return Settings.ConfigFile.Bind<T>("MuchBetterHotkeys", key, param, description).Value;
@@ -53,7 +56,10 @@
             ParseKey("QuickRepairHotkey", ref this.QuickRepairHotkey, "While building, press this key to repair the object you're aiming at");
             ParseKey("QuickEquipHammerHotkey", ref this.QuickEquipHammerHotkey, "Find the hammer with the lowest durability in your inventory and equip it");
             ParseKey("QuickEquipTorchHotkey", ref this.QuickEquipTorchHotkey, "Find the torch with the lowest durability in your inventory and equip it");
+            ParseKey("QuickEquipPickaxeHotkey", ref this.QuickEquipPickaxeHotkey, "Find the best pickaxe with the lowest durability in your inventory and equip it");
+            ParseKey("QuickEquipAxeHotkey", ref this.QuickEquipAxeHotkey, "Find the best axe with the lowest durability in your inventory and equip it");
             ParseKey("BuildRotationSnapHotkey", ref this.BuildRotationSnapHotkey, "Hold this key while scrolling to rotate objects 90 degrees in build mode");
+            ParseKey("EasyHotbarPrefix", ref this.EasyHotbarPrefix, "Hold this prefix together with 1-4 in order to use hotbar items 5-8");
         }
     }
 }

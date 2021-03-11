@@ -10,7 +10,7 @@ namespace MuchBetterHotkeys
 
         private static void QuickSelectBuild(Player player) {
             // This code should not run if we are not holding the hammer, the placement menu is open or we're not pointing at something
-            if (!player.InPlaceMode() || Hud.IsPieceSelectionVisible()) {
+            if (!player.InPlaceMode() && Hud.IsPieceSelectionVisible()) {
                 return;
             }
 
