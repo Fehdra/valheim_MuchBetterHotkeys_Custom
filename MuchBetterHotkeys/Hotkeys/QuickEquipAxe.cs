@@ -1,8 +1,9 @@
-namespace MuchBetterHotkeys {
+namespace MuchBetterHotkeys
+{
 
-	using System;
-	using System.Collections.Generic;
-	using UnityEngine;
+    using System;
+    using System.Collections.Generic;
+    using UnityEngine;
 
     public partial class PlayerHotkeyPatch
     {
@@ -12,13 +13,17 @@ namespace MuchBetterHotkeys {
             GameObject hoverObject = player.GetHoverObject();
             Hoverable hoverable = (hoverObject ? hoverObject.GetComponentInParent<Hoverable>() : null);
             string hoverText = hoverable.GetHoverText();
-            foreach (string compareText in axeCompareTexts) {
-                if (compareText == hoverText) {
-                    PlayerHotkeyPatch.QuickEquipHammer(player);
+            if (Array.Exists(axeCompareTexts, element => element == hoverText)) {
+                Predicate<ItemDrop.ItemData> isAxe = delegate (ItemDrop.ItemData item) { return item.m_shared.m_name.Contains("$item_axe"); };
+                List<ItemDrop.ItemData> axes = player.m_inventory.m_inventory.FindAll(isAxe);
+                // TODO: Check for the best quality axe
+                axes.Sort(new DurabilityComparer());
+                if (axes.Count > 0) {
+                    player.EquipItem(axes[0]);
+                    return false;
                 }
             }
             return true;
         }
-    }
     }
 }

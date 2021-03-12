@@ -13,12 +13,12 @@ namespace MuchBetterHotkeys
             Hoverable hoverable = (hoverObject ? hoverObject.GetComponentInParent<Hoverable>() : null);
             string hoverText = hoverable.GetHoverText();
             if (Array.Exists(pickaxeCompareTexts, element => element == hoverText)) {
-                Predicate<ItemDrop.ItemData> isAxe = delegate (ItemDrop.ItemData item) { return item.m_shared.m_name.Contains("$item_axe"); };
-                List<ItemDrop.ItemData> axes = player.m_inventory.m_inventory.FindAll(isAxe);
-                // TODO: Check for the best quality axe
-                axes.Sort(new DurabilityComparer());
-                if (axes.Count > 0) {
-                    player.EquipItem(axes[0]);
+                Predicate<ItemDrop.ItemData> isPickaxe = delegate (ItemDrop.ItemData item) { return item.m_shared.m_name.Contains("$item_pickaxe"); };
+                List<ItemDrop.ItemData> pickaxes = player.m_inventory.m_inventory.FindAll(isPickaxe);
+                // TODO: Check for the best quality pickaxe
+                pickaxes.Sort(new DurabilityComparer());
+                if (pickaxes.Count > 0) {
+                    player.EquipItem(pickaxes[0]);
                     return false;
                 }
             }
