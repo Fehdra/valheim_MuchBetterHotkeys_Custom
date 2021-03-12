@@ -88,6 +88,8 @@
     <Compile Include="Config.cs" />
     <Compile Include="Hotkeys\QuickEquipHammer.cs" />
     <Compile Include="Hotkeys\QuickEquipTorch.cs" />
+    <Compile Include="Hotkeys\QuickEquipAxe.cs" />
+    <Compile Include="Hotkeys\QuickEquipPickaxe.cs" />
     <Compile Include="Hotkeys\QuickPieceSelection.cs" />
     <Compile Include="Hotkeys\QuickRepair.cs" />
     <Compile Include="Hotkeys\QuickSelectBuild.cs" />

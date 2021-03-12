@@ -1,9 +1,8 @@
-namespace MuchBetterHotkeys
-{
+namespace MuchBetterHotkeys {
 
-    using System;
-    using System.Collections.Generic;
-    using UnityEngine;
+	using System;
+	using System.Collections.Generic;
+	using UnityEngine;
 
     public partial class PlayerHotkeyPatch
     {
@@ -20,5 +19,6 @@ namespace MuchBetterHotkeys
             }
             return true;
         }
+    }
     }
 }

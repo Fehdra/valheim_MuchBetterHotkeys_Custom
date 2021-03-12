@@ -8,7 +8,7 @@ namespace MuchBetterHotkeys {
 			var rightItem = player.m_rightItem;
 			if (rightItem != null && rightItem.m_shared.m_name == "$item_torch") {
 				if (!player.InAttack()) {
-					player.UnequipItem(player.m_rightItem);
+					player.QueueUnequipItem(player.m_rightItem);
 					return;
 				}
 			}
@@ -21,7 +21,7 @@ namespace MuchBetterHotkeys {
 			List<ItemDrop.ItemData> torches = player.m_inventory.m_inventory.FindAll(isTorch);
 			torches.Sort(new DurabilityComparer());
 			if (torches.Count > 0) {
-				player.EquipItem(torches[0]);
+				player.QueueEquipItem(torches[0]);
 			}
 		}
 	}

@@ -6,7 +6,7 @@ namespace MuchBetterHotkeys
 
     public partial class PlayerHotkeyPatch
     {
-        public static string[] pickaxeCompareTexts = new string[] { "Rock", "Tin deposit", "Muddy scraps", "Copper deposit", "Obsidian", "Silver vein", "Beech" };
+        public static string[] pickaxeCompareTexts = new string[] { "Rock", "Tin deposit", "Muddy scraps", "Copper deposit", "Obsidian", "Silver vein" };
 
         private static bool QuickEquipPickaxe(Player player) {
             GameObject hoverObject = player.GetHoverObject();

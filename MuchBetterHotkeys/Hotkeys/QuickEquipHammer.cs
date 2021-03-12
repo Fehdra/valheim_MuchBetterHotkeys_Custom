@@ -9,7 +9,7 @@ namespace MuchBetterHotkeys {
 			var rightItem = player.m_rightItem;
 			if (rightItem != null && rightItem.m_shared.m_name == "$item_hammer") {
 				if (!player.InAttack()) {
-					player.UnequipItem(rightItem);
+					player.QueueUnequipItem(rightItem);
 					return;
 				}
 			}
@@ -22,7 +22,7 @@ namespace MuchBetterHotkeys {
 			List<ItemDrop.ItemData> hammers = player.m_inventory.m_inventory.FindAll(isHammer);
 			hammers.Sort(new DurabilityComparer());
 			if (hammers.Count > 0) {
-				player.EquipItem(hammers[0]);
+				player.QueueEquipItem(hammers[0]);
 			}
 		}
 	}
