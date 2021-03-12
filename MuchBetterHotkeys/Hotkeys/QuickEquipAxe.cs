@@ -7,19 +7,18 @@ namespace MuchBetterHotkeys
 
     public partial class PlayerHotkeyPatch
     {
+
+        public static string[] axeCompareTexts = new string[] { "Log", "Beech", "Birch", "Oak", "Ancient tree" };
         private static bool QuickEquipAxe(Player player) {
-            Debug.Log(" Not Implemented Yet ");
-            return false;
             GameObject hoverObject = player.GetHoverObject();
             Hoverable hoverable = (hoverObject ? hoverObject.GetComponentInParent<Hoverable>() : null);
             string hoverText = hoverable.GetHoverText();
-            string[] compareTexts = new string[] { "Log", "Beech", "Birch", "Oak", "Ancient tree" };
-            foreach (string compareText in compareTexts) {
+            foreach (string compareText in axeCompareTexts) {
                 if (compareText == hoverText) {
                     PlayerHotkeyPatch.QuickEquipHammer(player);
                 }
             }
-            return false;
+            return true;
         }
     }
 }

@@ -49,10 +49,14 @@ namespace MuchBetterHotkeys
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Q) && __instance.GetHoverObject() != null) {
-                PlayerHotkeyPatch.QuickEquipAxe(__instance);
-                PlayerHotkeyPatch.QuickEquipPickaxe(__instance);
+            if (Input.GetKeyDown(KeyCode.Q) && __instance.GetHoverObject() != null && !PlayerHotkeyPatch.QuickEquipAxe(__instance)) {
+                return false;
             }
+
+            if (Input.GetKeyDown(KeyCode.Q) && __instance.GetHoverObject() != null && !PlayerHotkeyPatch.QuickEquipPickaxe(__instance)) {
+                return false;
+            }
+
             return true;
         }
 
