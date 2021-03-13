@@ -41,7 +41,7 @@ namespace MuchBetterHotkeys
             }
 
             // Rotate 90 degree angles
-            if (Input.GetKey(PlayerHotkeyPatch.m_settings.BuildRotationSnapHotkey)) {
+            if (PlayerHotkeyPatch.m_settings.buildRotationSnapHotkey.Value.IsDown()) {
                 if (!PlayerHotkeyPatch.BuildRotationSnap(__instance)) {
                     return false;
                 }
@@ -75,37 +75,37 @@ namespace MuchBetterHotkeys
                 return;
             }
 
-            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.SwitchHotbarHotkey)) {
+            if (PlayerHotkeyPatch.m_settings.switchHotbarHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.SwitchHotbar(__instance);
                 return;
             }
 
-            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickRepairHotkey)) {
+            if (PlayerHotkeyPatch.m_settings.quickRepairHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.QuickRepair(__instance);
                 return;
             }
 
-            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickEquipHammerHotkey)) {
+            if (PlayerHotkeyPatch.m_settings.quickEquipHammerHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.QuickEquipHammer(__instance);
                 return;
             }
 
-            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickOpenSkillsHotkey)) {
+            if (PlayerHotkeyPatch.m_settings.quickOpenSkillsHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.QuickOpenSkills();
                 return;
             }
 
-            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickOpenTextsHotkey)) {
+            if (PlayerHotkeyPatch.m_settings.quickOpenTextsHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.QuickOpenTexts();
                 return;
             }
 
-            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickEquipTorchHotkey)) {
+            if (PlayerHotkeyPatch.m_settings.quickEquipTorchHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.QuickEquipTorch(__instance);
                 return;
             }
 
-            if (Input.GetKeyDown(PlayerHotkeyPatch.m_settings.QuickSelectBuildHotkey)) {
+            if (PlayerHotkeyPatch.m_settings.quickSelectBuildHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.QuickSelectBuild(__instance);
                 return;
             }

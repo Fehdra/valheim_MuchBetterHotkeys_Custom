@@ -5,25 +5,30 @@ namespace MuchBetterHotkeys
     public partial class PlayerHotkeyPatch
     {
         private static void QuickScrollPieceSelection(Player player) {
-            Debug.Log("Not Implemented Yet");
-            return;
             Vector2Int currentIndex = player.m_buildPieces.GetSelectedIndex();
-            Debug.Log(currentIndex);
-            var newX = currentIndex.x + ((Input.mouseScrollDelta.y > 0.0) ? 1 : -1);
-            int newY = 0;
+
+            int newX = currentIndex.x + ((Input.mouseScrollDelta.y > 0.0) ? 1 : -1);
+            int newY = currentIndex.y;
+
             if (newX < 0) {
+                newX = 9;
                 newY = currentIndex.y - 1;
-            }
-            if (newX >= 10) {
+            } else if (newX > 9) {
+                newX = 0;
                 newY = currentIndex.y + 1;
             }
-            newX = newX % 10;
 
             if (newY < 0) {
                 player.m_buildPieces.PrevCategory();
+                newY = player.m_buildPieces.GetAvailablePiecesInSelectedCategory() / 10;
+            } else if (newY > (player.m_buildPieces.GetAvailablePiecesInSelectedCategory() / 10)) {
+                player.m_buildPieces.NextCategory();
+                newY = 0;
             }
 
+            currentIndex = new Vector2Int(newX, newY);
             Debug.Log(currentIndex);
+
             player.SetSelectedPiece(currentIndex);
 
             // Update the placement ghost

@@ -23,7 +23,7 @@ namespace MuchBetterHotkeys
         [HarmonyTranspiler]
         [HarmonyPatch(typeof(Player), "UpdateHover")]
         private static IEnumerable<CodeInstruction> Patch(IEnumerable<CodeInstruction> instructions) {
-            if (!PlayerHotkeyPatch.m_settings.interactWhileBuilding) {
+            if (!PlayerHotkeyPatch.m_settings.interactWhileBuilding.Value) {
                 return instructions;
             }
             List<CodeInstruction> list = Enumerable.ToList<CodeInstruction>(instructions);

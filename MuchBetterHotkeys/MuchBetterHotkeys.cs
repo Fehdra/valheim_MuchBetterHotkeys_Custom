@@ -10,7 +10,7 @@
     {
         private const string MID = "org.enta.plugins.muchbetterhotkeys";
         private const string modName = "Much Better Hotkeys";
-        private const string pluginVersion = "0.1.0";
+        private const string pluginVersion = "1.0.0";
         private static Settings m_settings = null;
 
         // Awake is called once when both the game and the plug-in are loaded
@@ -25,7 +25,7 @@
             }
             PlayerHotkeyPatch.m_settings = MuchBetterHotkeys.m_settings;
 
-            if (!MuchBetterHotkeys.m_settings.enabledMod) {
+            if (!MuchBetterHotkeys.m_settings.enabledMod.Value) {
                 Logger.LogInfo(modName + " has been disabled in the mod config");
                 return;
             }
