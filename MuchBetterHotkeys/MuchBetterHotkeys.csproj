@@ -37,11 +37,11 @@
     <Reference Include="0Harmony">
       <HintPath>..\Libs\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="assembly_guiutils">
-      <HintPath>..\Libs\assembly_guiutils.dll</HintPath>
+    <Reference Include="assembly_guiutils_publicized">
+      <HintPath>..\Libs\assembly_guiutils_publicized.dll</HintPath>
     </Reference>
-    <Reference Include="assembly_utils">
-      <HintPath>..\Libs\assembly_utils.dll</HintPath>
+    <Reference Include="assembly_utils_publicized">
+      <HintPath>..\Libs\assembly_utils_publicized.dll</HintPath>
     </Reference>
     <Reference Include="assembly_valheim_publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -78,9 +78,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Hotkeys\QuickScrollPieceSelection.cs" />
     <Compile Include="Hotkeys\EasyHotbar.cs" />
-    <Compile Include="Hotkeys\QuickEquipPickaxe.cs" />
     <Compile Include="Hotkeys\QuickEquipAxe.cs" />
+    <Compile Include="Hotkeys\QuickEquipPickaxe.cs" />
     <Compile Include="Hotkeys\QuickOpenSkills.cs" />
     <Compile Include="Hotkeys\QuickOpenTexts.cs" />
     <Compile Include="Hotkeys\TransferItemToHotbar.cs" />
@@ -88,8 +89,6 @@
     <Compile Include="Config.cs" />
     <Compile Include="Hotkeys\QuickEquipHammer.cs" />
     <Compile Include="Hotkeys\QuickEquipTorch.cs" />
-    <Compile Include="Hotkeys\QuickEquipAxe.cs" />
-    <Compile Include="Hotkeys\QuickEquipPickaxe.cs" />
     <Compile Include="Hotkeys\QuickPieceSelection.cs" />
     <Compile Include="Hotkeys\QuickRepair.cs" />
     <Compile Include="Hotkeys\QuickSelectBuild.cs" />

@@ -23,6 +23,7 @@
 
         public bool enabledMod = true;
         public bool interactWhileBuilding = true;
+        public bool stopAutoRunAfterQuickEquip = true;
         public KeyCode SwitchHotbarHotkey = KeyCode.Z;
         public KeyCode QuickSelectBuildHotkey = KeyCode.Q;
         public KeyCode QuickRepairHotkey = KeyCode.V;
@@ -50,6 +51,7 @@
         private void LoadConfig() {
             this.enabledMod = this.BindParameter<bool>(enabledMod, "Enable", "Whether or not to enable this mod");
             this.interactWhileBuilding = this.BindParameter<bool>(interactWhileBuilding, "InteractWhileBuilding", "Whether or not to turn on interaction while holding the hammer, the hoe or any tool with a menu");
+            this.interactWhileBuilding = this.BindParameter<bool>(stopAutoRunAfterQuickEquip, "stopAutoRunAfterQuickEquip", "Normally when pressing Q, the character starts autorunning. This is disabled if this is true");
 
             ParseKey("SwitchHotbarHotkey", ref this.SwitchHotbarHotkey, "Swaps the 1st and 2nd row of your inventory");
             ParseKey("QuickSelectBuildHotkey", ref this.QuickSelectBuildHotkey, "Press when building to select the object and rotation of the object you're pointing at. Rather than selecting it from the HUD");

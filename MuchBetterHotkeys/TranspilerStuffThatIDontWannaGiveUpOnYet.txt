@@ -1,0 +1,20 @@
+        [HarmonyTranspiler]
+        [HarmonyPatch(typeof(Player), "SetControls")]
+        private static IEnumerable<CodeInstruction> SetControlsPatch(IEnumerable<CodeInstruction> instructions) {
+            if (!PlayerHotkeyPatch.m_settings.stopAutoRunAfterQuickEquip) {
+                return instructions;
+            }
+            List<CodeInstruction> list = Enumerable.ToList<CodeInstruction>(instructions);
+            for (int i = 0; i < list.Count; i++) {
+                // Find the first InPlaceModeRef
+                if (list[i].Calls(PlayerHotkeyPatch.InPlaceModeRef)) {
+                    // Add an extra conditional to the if to stop Autorun
+                    list[i + 1] = new CodeInstruction(OpCodes.Brfalse_S, list[i + 1].operand);
+                    list.Insert(i, new CodeInstruction(OpCodes.And));
+                    list.Insert(i, CodeInstruction.LoadField(typeof(PlayerHotkeyPatch), "m_stopAutorun"));
+                    list.Insert(i, new CodeInstruction(OpCodes.Ceq));
+                    list.Insert(i, new CodeInstruction(OpCodes.Ldc_I4_0));
+                }
+            }
+            return Enumerable.AsEnumerable<CodeInstruction>(list);
+        }
