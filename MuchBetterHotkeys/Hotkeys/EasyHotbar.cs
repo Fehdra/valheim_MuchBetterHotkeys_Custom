@@ -9,7 +9,7 @@ namespace MuchBetterHotkeys
     public partial class PlayerHotkeyPatch
     {
         private static bool EasyHotbar(Player player) {
-            if (!PlayerHotkeyPatch.m_settings.easyHotbarPrefix.Value.IsPressed()) {
+            if (!MuchBetterHotkeys.easyHotbarPrefix.Value.IsPressed()) {
                 return true;
             }
             KeyCode[] keycodes = { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4 };

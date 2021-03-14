@@ -14,7 +14,6 @@ namespace MuchBetterHotkeys
     public partial class PlayerHotkeyPatch : BaseUnityPlugin
     {
 
-        public static Settings m_settings = null;
         private static bool m_stopAutorun = false;
 
         [HarmonyPrefix]
@@ -41,7 +40,7 @@ namespace MuchBetterHotkeys
             }
 
             // Rotate 90 degree angles
-            if (PlayerHotkeyPatch.m_settings.buildRotationSnapHotkey.Value.IsDown()) {
+            if (MuchBetterHotkeys.buildRotationSnapHotkey.Value.IsDown()) {
                 if (!PlayerHotkeyPatch.BuildRotationSnap(__instance)) {
                     return false;
                 }
@@ -70,42 +69,42 @@ namespace MuchBetterHotkeys
                 return;
             }
 
-            if (__instance.InPlaceMode() && Input.mouseScrollDelta.y != 0.0) {
+            if (__instance.InPlaceMode() && MuchBetterHotkeys.scrollPieceSelectionPrefix.Value.IsPressed() && Input.mouseScrollDelta.y != 0.0) {
                 PlayerHotkeyPatch.QuickScrollPieceSelection(__instance);
                 return;
             }
 
-            if (PlayerHotkeyPatch.m_settings.switchHotbarHotkey.Value.IsDown()) {
+            if (MuchBetterHotkeys.switchHotbarHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.SwitchHotbar(__instance);
                 return;
             }
 
-            if (PlayerHotkeyPatch.m_settings.quickRepairHotkey.Value.IsDown()) {
+            if (MuchBetterHotkeys.quickRepairHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.QuickRepair(__instance);
                 return;
             }
 
-            if (PlayerHotkeyPatch.m_settings.quickEquipHammerHotkey.Value.IsDown()) {
+            if (MuchBetterHotkeys.quickEquipHammerHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.QuickEquipHammer(__instance);
                 return;
             }
 
-            if (PlayerHotkeyPatch.m_settings.quickOpenSkillsHotkey.Value.IsDown()) {
+            if (MuchBetterHotkeys.quickOpenSkillsHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.QuickOpenSkills();
                 return;
             }
 
-            if (PlayerHotkeyPatch.m_settings.quickOpenTextsHotkey.Value.IsDown()) {
+            if (MuchBetterHotkeys.quickOpenTextsHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.QuickOpenTexts();
                 return;
             }
 
-            if (PlayerHotkeyPatch.m_settings.quickEquipTorchHotkey.Value.IsDown()) {
+            if (MuchBetterHotkeys.quickEquipTorchHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.QuickEquipTorch(__instance);
                 return;
             }
 
-            if (PlayerHotkeyPatch.m_settings.quickSelectBuildHotkey.Value.IsDown()) {
+            if (MuchBetterHotkeys.quickSelectBuildHotkey.Value.IsDown()) {
                 PlayerHotkeyPatch.QuickSelectBuild(__instance);
                 return;
             }
