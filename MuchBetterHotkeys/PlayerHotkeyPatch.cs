@@ -53,8 +53,10 @@ namespace MuchBetterHotkeys
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Q) && __instance.GetHoverObject() != null) {
+            if (MuchBetterHotkeys.quickEquipAxeHotkey.Value.IsDown() && __instance.GetHoverObject() != null) {
                 PlayerHotkeyPatch.QuickEquipAxe(__instance);
+            }
+            if (MuchBetterHotkeys.quickEquipPickaxeHotkey.Value.IsDown() && __instance.GetHoverObject() != null) {
                 PlayerHotkeyPatch.QuickEquipPickaxe(__instance);
             }
             return true;

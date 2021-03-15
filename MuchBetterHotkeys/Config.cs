@@ -21,6 +21,8 @@
         public static ConfigEntry<KeyboardShortcut> easyHotbarPrefix { get; set; }
         public static ConfigEntry<KeyboardShortcut> scrollPieceSelectionPrefix { get; set; }
         public static ConfigEntry<KeyboardShortcut> quickEquipTorchHotkey { get; set; }
+        public static ConfigEntry<KeyboardShortcut> quickEquipPickaxeHotkey { get; set; }
+        public static ConfigEntry<KeyboardShortcut> quickEquipAxeHotkey { get; set; }
 
         // Extra
         public static bool buildHelperModActive = false;
@@ -39,6 +41,8 @@
             buildRotationSnapHotkey = base.Config.Bind<KeyboardShortcut>(GENERAL_SETTINGS, "BuildRotationSnapHotkey", new KeyboardShortcut(KeyCode.LeftControl), "Hold this key while scrolling to rotate objects 90 degrees in build mode");
             easyHotbarPrefix = base.Config.Bind<KeyboardShortcut>(GENERAL_SETTINGS, "EasyHotbarPrefix", new KeyboardShortcut(KeyCode.LeftAlt), "Hold this prefix together with 1-4 in order to use hotbar items 5-8");
             scrollPieceSelectionPrefix = base.Config.Bind<KeyboardShortcut>(GENERAL_SETTINGS, "ScrollPieceSelectionPrefix", new KeyboardShortcut(KeyCode.LeftAlt), "Hold this prefix together with scrolling to quickly switch between items in a hammer/hoe/cultivator menu");
+            quickEquipPickaxeHotkey = base.Config.Bind<KeyboardShortcut>(GENERAL_SETTINGS, "QuickEquipPickaxeHotkey", new KeyboardShortcut(KeyCode.Q), "Find the best quality, but lowest durability, pickaxe when looking at its respective resource and pressing this button. Equip it.");
+            quickEquipAxeHotkey = base.Config.Bind<KeyboardShortcut>(GENERAL_SETTINGS, "QuickEquipAxeHotkey", new KeyboardShortcut(KeyCode.Q), "Find the best quality, but lowest durability, axe when looking at its respective resource and pressing this button. Equip it.");
         }
     }
 }
