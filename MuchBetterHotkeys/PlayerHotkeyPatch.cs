@@ -40,7 +40,7 @@ namespace MuchBetterHotkeys
             }
 
             // Rotate 90 degree angles
-            if (MuchBetterHotkeys.buildRotationSnapHotkey.Value.IsDown()) {
+            if (Input.GetKeyDown(MuchBetterHotkeys.buildRotationSnapHotkey.Value.MainKey)) {
                 if (!PlayerHotkeyPatch.BuildRotationSnap(__instance)) {
                     return false;
                 }
@@ -53,10 +53,10 @@ namespace MuchBetterHotkeys
                 }
             }
 
-            if (MuchBetterHotkeys.quickEquipAxeHotkey.Value.IsDown() && __instance.GetHoverObject() != null) {
+            if (Input.GetKeyDown(MuchBetterHotkeys.quickEquipAxeHotkey.Value.MainKey) && __instance.GetHoverObject() != null) {
                 PlayerHotkeyPatch.QuickEquipAxe(__instance);
             }
-            if (MuchBetterHotkeys.quickEquipPickaxeHotkey.Value.IsDown() && __instance.GetHoverObject() != null) {
+            if (Input.GetKeyDown(MuchBetterHotkeys.quickEquipPickaxeHotkey.Value.MainKey) && __instance.GetHoverObject() != null) {
                 PlayerHotkeyPatch.QuickEquipPickaxe(__instance);
             }
             return true;
@@ -71,42 +71,42 @@ namespace MuchBetterHotkeys
                 return;
             }
 
-            if (__instance.InPlaceMode() && MuchBetterHotkeys.scrollPieceSelectionPrefix.Value.IsPressed() && Input.mouseScrollDelta.y != 0.0) {
+            if (__instance.InPlaceMode() && Input.GetKey(MuchBetterHotkeys.scrollPieceSelectionPrefix.Value.MainKey) && Input.mouseScrollDelta.y != 0.0) {
                 PlayerHotkeyPatch.QuickScrollPieceSelection(__instance);
                 return;
             }
 
-            if (MuchBetterHotkeys.switchHotbarHotkey.Value.IsDown()) {
+            if (Input.GetKeyDown(MuchBetterHotkeys.switchHotbarHotkey.Value.MainKey)) {
                 PlayerHotkeyPatch.SwitchHotbar(__instance);
                 return;
             }
 
-            if (MuchBetterHotkeys.quickRepairHotkey.Value.IsDown()) {
+            if (Input.GetKeyDown(MuchBetterHotkeys.quickRepairHotkey.Value.MainKey)) {
                 PlayerHotkeyPatch.QuickRepair(__instance);
                 return;
             }
 
-            if (MuchBetterHotkeys.quickEquipHammerHotkey.Value.IsDown()) {
+            if (Input.GetKeyDown(MuchBetterHotkeys.quickEquipHammerHotkey.Value.MainKey)) {
                 PlayerHotkeyPatch.QuickEquipHammer(__instance);
                 return;
             }
 
-            if (MuchBetterHotkeys.quickOpenSkillsHotkey.Value.IsDown()) {
+            if (Input.GetKeyDown(MuchBetterHotkeys.quickOpenSkillsHotkey.Value.MainKey)) {
                 PlayerHotkeyPatch.QuickOpenSkills();
                 return;
             }
 
-            if (MuchBetterHotkeys.quickOpenTextsHotkey.Value.IsDown()) {
+            if (Input.GetKeyDown(MuchBetterHotkeys.quickOpenTextsHotkey.Value.MainKey)) {
                 PlayerHotkeyPatch.QuickOpenTexts();
                 return;
             }
 
-            if (MuchBetterHotkeys.quickEquipTorchHotkey.Value.IsDown()) {
+            if (Input.GetKeyDown(MuchBetterHotkeys.quickEquipTorchHotkey.Value.MainKey)) {
                 PlayerHotkeyPatch.QuickEquipTorch(__instance);
                 return;
             }
 
-            if (MuchBetterHotkeys.quickSelectBuildHotkey.Value.IsDown()) {
+            if (Input.GetKeyDown(MuchBetterHotkeys.quickSelectBuildHotkey.Value.MainKey)) {
                 PlayerHotkeyPatch.QuickSelectBuild(__instance);
                 return;
             }
