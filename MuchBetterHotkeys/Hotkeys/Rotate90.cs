@@ -1,21 +1,19 @@
-namespace MuchBetterHotkeys
-{
+namespace MuchBetterHotkeys {
 
-    using UnityEngine;
+	using UnityEngine;
 
-    public partial class PlayerHotkeyPatch
-    {
+	public partial class PlayerHotkeyPatch {
 
-        private static bool BuildRotationSnap(Player player) {
-            if (Input.GetAxis("Mouse ScrollWheel") < 0f) {
-                player.m_placeRotation -= 4;
-                return false;
-            }
-            if (Input.GetAxis("Mouse ScrollWheel") > 0f) {
-                player.m_placeRotation += 4;
-                return false;
-            }
-            return true;
-        }
-    }
+		private static bool BuildRotationSnap(Player player) {
+			if (Input.GetAxis("Mouse ScrollWheel") < 0f) {
+				player.m_placeRotation -= 4;
+				return false;
+			}
+			if (Input.GetAxis("Mouse ScrollWheel") > 0f) {
+				player.m_placeRotation += 4;
+				return false;
+			}
+			return true;
+		}
+	}
 }
