@@ -1,5 +1,4 @@
 namespace MuchBetterHotkeys {
-	using UnityEngine;
 
 	public partial class PlayerHotkeyPatch {
 

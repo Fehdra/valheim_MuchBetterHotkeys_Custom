@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MuchBetterHotkeys</RootNamespace>
     <AssemblyName>MuchBetterHotkeys</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -79,22 +79,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Hotkeys\QuickScrollPieceSelection.cs" />
     <Compile Include="Hotkeys\EasyHotbar.cs" />
     <Compile Include="Hotkeys\QuickEquipAxe.cs" />
+    <Compile Include="Hotkeys\QuickEquipHammer.cs" />
     <Compile Include="Hotkeys\QuickEquipPickaxe.cs" />
+    <Compile Include="Hotkeys\QuickEquipTorch.cs" />
     <Compile Include="Hotkeys\QuickOpenSkills.cs" />
     <Compile Include="Hotkeys\QuickOpenTexts.cs" />
-    <Compile Include="Hotkeys\TransferItemToHotbar.cs" />
-    <Compile Include="InteractWhileBuild.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="Hotkeys\QuickEquipHammer.cs" />
-    <Compile Include="Hotkeys\QuickEquipTorch.cs" />
     <Compile Include="Hotkeys\QuickPieceSelection.cs" />
     <Compile Include="Hotkeys\QuickRepair.cs" />
+    <Compile Include="Hotkeys\QuickScrollPieceSelection.cs" />
     <Compile Include="Hotkeys\QuickSelectBuild.cs" />
     <Compile Include="Hotkeys\Rotate90.cs" />
     <Compile Include="Hotkeys\SwitchHotbar.cs" />
+    <Compile Include="Hotkeys\TransferItemToHotbar.cs" />
+    
+    <Compile Include="InteractWhileBuild.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="MuchBetterHotkeys.cs" />
     <Compile Include="PlayerHotkeyPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -102,6 +103,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y "$(TargetPath)" "D:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\scripts"</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y "$(TargetPath)" "D:\Program Files\Steam\steamapps\common\Valheim\BepInEx\scripts"</PostBuildEvent>
   </PropertyGroup>
 </Project>

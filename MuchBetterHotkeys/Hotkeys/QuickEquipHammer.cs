@@ -2,7 +2,6 @@ namespace MuchBetterHotkeys {
 
 	using System;
 	using System.Collections.Generic;
-	using UnityEngine;
 
 	public partial class PlayerHotkeyPatch {
 		private static void QuickEquipHammer(Player player) {

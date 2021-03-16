@@ -1,13 +1,11 @@
-namespace MuchBetterHotkeys
-{
+namespace MuchBetterHotkeys {
 
-    using System;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using System.Linq;
+	using System;
+	using System.Collections.Generic;
+	using UnityEngine;
+	using System.Linq;
 
-    public partial class PlayerHotkeyPatch
-    {
+	public partial class PlayerHotkeyPatch {
 
         public static string[] axeCompareTexts = new string[] { "Log", "Beech", "Birch", "Oak", "Ancient tree", "Fir", "Pine" };
         private static bool QuickEquipAxe(Player player) {
