@@ -33,12 +33,12 @@ namespace MuchBetterHotkeys {
 				return false;
 			}
 
-            // Rotate 90 degree angles
-            if (Input.GetKeyDown(MuchBetterHotkeys.buildRotationSnapHotkey.Value.MainKey)) {
-                if (!PlayerHotkeyPatch.BuildRotationSnap(__instance)) {
-                    return false;
-                }
-            }
+			// Rotate 90 degree angles
+			if (Input.GetKey(MuchBetterHotkeys.buildRotationSnapHotkey.Value.MainKey)) {
+				if (!PlayerHotkeyPatch.BuildRotationSnap(__instance)) {
+					return false;
+				}
+			}
 
 			// Piece Selection hotkey
 			if (Hud.IsPieceSelectionVisible() && __instance.InPlaceMode()) {
@@ -47,14 +47,14 @@ namespace MuchBetterHotkeys {
 				}
 			}
 
-            if (Input.GetKeyDown(MuchBetterHotkeys.quickEquipAxeHotkey.Value.MainKey) && __instance.GetHoverObject() != null) {
-                PlayerHotkeyPatch.QuickEquipAxe(__instance);
-            }
-            if (Input.GetKeyDown(MuchBetterHotkeys.quickEquipPickaxeHotkey.Value.MainKey) && __instance.GetHoverObject() != null) {
-                PlayerHotkeyPatch.QuickEquipPickaxe(__instance);
-            }
-            return true;
-        }
+			if (Input.GetKeyDown(MuchBetterHotkeys.quickEquipAxeHotkey.Value.MainKey) && __instance.GetHoverObject() != null) {
+				PlayerHotkeyPatch.QuickEquipAxe(__instance);
+			}
+			if (Input.GetKeyDown(MuchBetterHotkeys.quickEquipPickaxeHotkey.Value.MainKey) && __instance.GetHoverObject() != null) {
+				PlayerHotkeyPatch.QuickEquipPickaxe(__instance);
+			}
+			return true;
+		}
 
 
 		[HarmonyPostfix]
@@ -65,46 +65,46 @@ namespace MuchBetterHotkeys {
 				return;
 			}
 
-            if (__instance.InPlaceMode() && Input.GetKey(MuchBetterHotkeys.scrollPieceSelectionPrefix.Value.MainKey) && Input.mouseScrollDelta.y != 0.0) {
-                PlayerHotkeyPatch.QuickScrollPieceSelection(__instance);
-                return;
-            }
+			if (__instance.InPlaceMode() && Input.GetKey(MuchBetterHotkeys.scrollPieceSelectionPrefix.Value.MainKey) && Input.mouseScrollDelta.y != 0.0) {
+				PlayerHotkeyPatch.QuickScrollPieceSelection(__instance);
+				return;
+			}
 
-            if (Input.GetKeyDown(MuchBetterHotkeys.switchHotbarHotkey.Value.MainKey)) {
-                PlayerHotkeyPatch.SwitchHotbar(__instance);
-                return;
-            }
+			if (Input.GetKeyDown(MuchBetterHotkeys.switchHotbarHotkey.Value.MainKey)) {
+				PlayerHotkeyPatch.SwitchHotbar(__instance);
+				return;
+			}
 
-            if (Input.GetKeyDown(MuchBetterHotkeys.quickRepairHotkey.Value.MainKey)) {
-                PlayerHotkeyPatch.QuickRepair(__instance);
-                return;
-            }
+			if (Input.GetKeyDown(MuchBetterHotkeys.quickRepairHotkey.Value.MainKey)) {
+				PlayerHotkeyPatch.QuickRepair(__instance);
+				return;
+			}
 
-            if (Input.GetKeyDown(MuchBetterHotkeys.quickEquipHammerHotkey.Value.MainKey)) {
-                PlayerHotkeyPatch.QuickEquipHammer(__instance);
-                return;
-            }
+			if (Input.GetKeyDown(MuchBetterHotkeys.quickEquipHammerHotkey.Value.MainKey)) {
+				PlayerHotkeyPatch.QuickEquipHammer(__instance);
+				return;
+			}
 
-            if (Input.GetKeyDown(MuchBetterHotkeys.quickOpenSkillsHotkey.Value.MainKey)) {
-                PlayerHotkeyPatch.QuickOpenSkills();
-                return;
-            }
+			if (Input.GetKeyDown(MuchBetterHotkeys.quickOpenSkillsHotkey.Value.MainKey)) {
+				PlayerHotkeyPatch.QuickOpenSkills();
+				return;
+			}
 
-            if (Input.GetKeyDown(MuchBetterHotkeys.quickOpenTextsHotkey.Value.MainKey)) {
-                PlayerHotkeyPatch.QuickOpenTexts();
-                return;
-            }
+			if (Input.GetKeyDown(MuchBetterHotkeys.quickOpenTextsHotkey.Value.MainKey)) {
+				PlayerHotkeyPatch.QuickOpenTexts();
+				return;
+			}
 
-            if (Input.GetKeyDown(MuchBetterHotkeys.quickEquipTorchHotkey.Value.MainKey)) {
-                PlayerHotkeyPatch.QuickEquipTorch(__instance);
-                return;
-            }
+			if (Input.GetKeyDown(MuchBetterHotkeys.quickEquipTorchHotkey.Value.MainKey)) {
+				PlayerHotkeyPatch.QuickEquipTorch(__instance);
+				return;
+			}
 
-            if (Input.GetKeyDown(MuchBetterHotkeys.quickSelectBuildHotkey.Value.MainKey)) {
-                PlayerHotkeyPatch.QuickSelectBuild(__instance);
-                return;
-            }
-        }
+			if (Input.GetKeyDown(MuchBetterHotkeys.quickSelectBuildHotkey.Value.MainKey)) {
+				PlayerHotkeyPatch.QuickSelectBuild(__instance);
+				return;
+			}
+		}
 
 		[HarmonyPostfix]
 		[HarmonyPatch(typeof(PlayerController), "FixedUpdate")]
