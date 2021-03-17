@@ -93,7 +93,6 @@
     <Compile Include="Hotkeys\Rotate90.cs" />
     <Compile Include="Hotkeys\SwitchHotbar.cs" />
     <Compile Include="Hotkeys\TransferItemToHotbar.cs" />
-    
     <Compile Include="InteractWhileBuild.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="MuchBetterHotkeys.cs" />
@@ -103,6 +102,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y "$(TargetPath)" "D:\Program Files\Steam\steamapps\common\Valheim\BepInEx\scripts"</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y "$(TargetPath)" "D:\Program Files (x86)\Steam\steamapps\common\Valheim\BepInEx\scripts"</PostBuildEvent>
   </PropertyGroup>
 </Project>
