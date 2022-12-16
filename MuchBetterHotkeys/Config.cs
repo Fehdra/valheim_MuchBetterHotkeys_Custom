@@ -1,10 +1,12 @@
-﻿namespace MuchBetterHotkeys {
+﻿namespace MuchBetterHotkeys
+{
 
 	using BepInEx;
 	using BepInEx.Configuration;
 	using UnityEngine;
 
-	public partial class MuchBetterHotkeys : BaseUnityPlugin {
+	public partial class MuchBetterHotkeys : BaseUnityPlugin
+	{
 		private static string GENERAL_SETTINGS = "General";
 
 		public static ConfigEntry<bool> enabledMod { get; set; }
@@ -22,10 +24,11 @@
 		public static ConfigEntry<KeyboardShortcut> quickEquipPickaxeHotkey { get; set; }
 		public static ConfigEntry<KeyboardShortcut> quickEquipAxeHotkey { get; set; }
 
-		// Extra
+		// Extra 
 		public static bool buildHelperModActive = false;
 
-		private void LoadConfig() {
+		private void LoadConfig()
+		{
 			enabledMod = base.Config.Bind<bool>(GENERAL_SETTINGS, "Enable", true, "Whether or not to enable this mod");
 			interactWhileBuilding = base.Config.Bind<bool>(GENERAL_SETTINGS, "InteractWhileBuilding", true, "Whether or not to turn on interaction while holding the hammer, the hoe or any tool with a menu");
 
