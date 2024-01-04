@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MuchBetterHotkeys</RootNamespace>
     <AssemblyName>MuchBetterHotkeys</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -102,6 +102,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y "$(TargetPath)" "D:\Program Files\Steam\steamapps\common\Valheim\BepInEx\plugins"</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y "$(TargetPath)" "G:\SteamLibrary\steamapps\common\Valheim\BepInEx\plugins"</PostBuildEvent>
   </PropertyGroup>
 </Project>

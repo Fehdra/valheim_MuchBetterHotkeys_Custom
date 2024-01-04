@@ -12,7 +12,7 @@
 	{
 		private const string MID = "org.enta.plugins.muchbetterhotkeys";
 		private const string modName = "Much Better Hotkeys";
-		private const string pluginVersion = "1.1.0";
+		private const string pluginVersion = "1.1.2";
 
 		// Awake is called once when both the game and the plug-in are loaded
 		void Awake()

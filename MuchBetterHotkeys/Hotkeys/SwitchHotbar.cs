@@ -6,7 +6,9 @@ namespace MuchBetterHotkeys
 
 		private static void SwitchHotbar(Player player)
 		{
-			ref Inventory inv = ref ((Humanoid)player).m_inventory;
+            // ref Inventory inv = ref ((Humanoid)player).m_inventory; -will not build-  so removed ref . no clue that that does Long term
+            // im not a coder lol
+            Inventory inv = ((Humanoid)player).m_inventory;
 			Inventory temp = new Inventory(inv.m_name + "_temp", inv.GetBkg(), inv.GetWidth(), inv.GetHeight());
 			int width = inv.GetWidth();
 			ItemDrop.ItemData currentLeftHidden = player.m_hiddenLeftItem;
